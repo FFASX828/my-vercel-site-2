@@ -1,25 +1,34 @@
 <!doctype html>
 <html>
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Vercel API Test</title>
+    <title>Image API Test</title>
   </head>
   <body>
-    <h1>Vercel API Test</h1>
-    <button id="btn">Call API</button>
-    <pre id="out">Waiting...</pre>
+    <h1>Image API Test</h1>
+    <button id="btn">Load Image From API</button>
+    <br><br>
+    <img id="img" style="max-width:400px; display:none;" />
+    <pre id="output">Waiting...</pre>
 
     <script>
-      const out = document.getElementById("out");
+      const output = document.getElementById("output");
+      const img = document.getElementById("img");
+
       document.getElementById("btn").addEventListener("click", async () => {
-        out.textContent = "Loading...";
+        output.textContent = "Loading...";
+        img.style.display = "none";
+
         try {
-          const r = await fetch("/api/hello");
-          const data = await r.json();
-          out.textContent = JSON.stringify(data, null, 2);
-        } catch (e) {
-          out.textContent = "Error: " + e.message;
+          const response = await fetch("/api/hello");
+          const data = await response.json();
+
+          output.textContent = JSON.stringify(data, null, 2);
+
+          img.src = data.imageUrl;
+          img.style.display = "block";
+
+        } catch (err) {
+          output.textContent = "Error: " + err.message;
         }
       });
     </script>
